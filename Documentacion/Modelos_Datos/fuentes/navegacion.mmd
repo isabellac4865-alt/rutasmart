@@ -1,0 +1,12 @@
+flowchart LR
+  L["Login / Registro<br/>(o invitado)"] --> I["Inicio<br/>origen · destino · hora pico"]
+  I --> P["Preferencias<br/>pesos · medios"]
+  P --> I
+  I -- "Buscar rutas" --> A["Alternativas<br/>ranking + recomendación"]
+  A --> D["Detalle<br/>mapa · paso a paso"]
+  D -. "Abrir en Google Maps" .-> GM(["App externa"])
+  I --> H["Historial"]
+  H -- "Buscar de nuevo" --> A
+  I & A & D & H & P -. "FAB 🤖" .-> AS["Asistente Rutina"]
+  I -- "🛠 solo admin" --> AD["Administración<br/>Resumen · Líneas · Aviso"]
+  AD -. "líneas suspendidas + aviso" .-> I

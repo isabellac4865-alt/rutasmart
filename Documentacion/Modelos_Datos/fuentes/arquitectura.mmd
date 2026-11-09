@@ -1,0 +1,37 @@
+flowchart TB
+  subgraph UI["Capa de presentación (ui/)"]
+    direction LR
+    P1["Pantallas Compose<br/>Login · Inicio · Preferencias<br/>Alternativas · Detalle · Historial · Asistente<br/>Administración (solo admin)"]
+    VM["ViewModels (StateFlow)<br/>SesionViewModel · RutaViewModel<br/>AsistenteViewModel · AdminViewModel"]
+    NAV["Navigation Compose<br/>(navegación por pila + FAB)"]
+    P1 <--> VM
+    NAV --- P1
+  end
+  subgraph DOM["Capa de dominio (domain/) · Kotlin puro"]
+    direction LR
+    UC["Casos de uso<br/>BuscarLugar · ObtenerAlternativas<br/>RecomendarRuta · ValidadorCuenta"]
+    MOT["Motor<br/>RedTransporte (grafo) · Planificador (Dijkstra)<br/>MotorPuntaje · Bitacora"]
+    MOD["Modelo<br/>Parada · Ruta · Tramo · MedioDeTransporte<br/>Alternativa · CriteriosUsuario · Excepciones"]
+    ADM["Administración<br/>EstadoServicio · AdminValidador<br/>Estadisticas"]
+    IA["IA<br/>AsistenteLocal · RutaAiPrompt<br/>AiInputGuard · AiResponseGuard · AiRateLimiter"]
+    UC --> MOT --> MOD
+    UC --> MOD
+  end
+  subgraph DAT["Capa de datos (data/) · patrón Repository"]
+    direction LR
+    REP["Repositorios<br/>Historial · Preferencias · Asistente<br/>Servicio (admin)"]
+    ROOM[("Room / SQLite<br/>consultas · preferencias")]
+    FB["FirebaseRemoto<br/>Auth + Firestore"]
+    GEM["GeminiClient<br/>HTTPS"]
+    RED["RedBogota<br/>TransMilenio + SITP"]
+    REP --> ROOM
+    REP --> FB
+    REP --> GEM
+  end
+  VM --> UC
+  VM --> REP
+  REP --> IA
+  REP --> ADM
+  UC --> RED
+  FB -.-> CLOUD["☁️ Firebase<br/>Authentication · Cloud Firestore"]
+  GEM -.-> GCLOUD["☁️ Google Gemini API"]

@@ -1,0 +1,69 @@
+# Pipeline de integración continua (CI) - Android / Kotlin
+# Se ejecuta automáticamente con cada cambio en main/develop y en cada Pull Request.
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+pr:
+  branches:
+    include:
+      - main
+      - develop
+
+pool:
+  vmImage: 'ubuntu-latest'   # incluye JDK y Android SDK
+
+variables:
+  GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
+
+steps:
+  - task: Cache@2
+    displayName: 'Cache de dependencias Gradle'
+    inputs:
+      key: 'gradle | "$(Agent.OS)" | **/build.gradle.kts, **/gradle-wrapper.properties'
+      restoreKeys: gradle | "$(Agent.OS)"
+      path: $(GRADLE_USER_HOME)
+
+  - script: chmod +x ./gradlew
+    displayName: 'Permisos del wrapper de Gradle'
+
+  - task: Gradle@3
+    displayName: '1. Instalación de dependencias + validación (Lint)'
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'lintDebug'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+
+  - task: Gradle@3
+    displayName: '2. Pruebas unitarias'
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'testDebugUnitTest'
+      publishJUnitResults: true
+      testResultsFiles: '**/build/test-results/testDebugUnitTest/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+
+  - task: Gradle@3
+    displayName: '3. Construcción del APK (artefacto)'
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'assembleDebug'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+
+  - task: CopyFiles@2
+    displayName: 'Copiar APK'
+    inputs:
+      contents: '**/build/outputs/apk/debug/*.apk'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publicar artefacto (APK)'
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'apk-debug'

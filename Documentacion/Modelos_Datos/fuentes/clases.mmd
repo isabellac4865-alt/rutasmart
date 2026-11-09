@@ -1,0 +1,110 @@
+classDiagram
+  direction LR
+  class MedioDeTransporte {
+    <<interface>>
+    +tipo: TipoMedio
+    +comodidad: Int
+    +co2GramosPorKm: Int
+    +factorRecorrido: Double
+    +esperaMinutos: Int
+    +calcularDuracion(km, horaPico) Double
+    +calcularCosto(km) Int
+    +comodidadEn(horaPico) Int
+  }
+  class Caminata
+  class Bicicleta
+  class Bus
+  class Metro
+  class Taxi
+  MedioDeTransporte <|.. Caminata
+  MedioDeTransporte <|.. Bicicleta
+  MedioDeTransporte <|.. Bus
+  MedioDeTransporte <|.. Metro
+  MedioDeTransporte <|.. Taxi
+  class Parada {
+    +id: String
+    +nombre: String
+    +latitud: Double
+    +longitud: Double
+  }
+  class Ruta {
+    -paradas: List~Parada~
+    +calcularDistanciaTotal() Double
+    +calcularTiempoEstimado(medio, horaPico) Double
+  }
+  class Tramo {
+    +medio: MedioDeTransporte
+    +ruta: Ruta
+    +linea: Linea?
+    +distanciaKm: Double
+    +duracionMinutos(horaPico) Double
+  }
+  class Alternativa {
+    +id: String
+    +titulo: String
+    +tramos: List~Tramo~
+    +tiempoTotalMinutos: Int
+    +costoTotal: Int
+    +transbordos: Int
+    +comodidadPromedio: Double
+    +co2Gramos: Int
+    +calcularPuntaje(criterios, rangos) Double
+  }
+  class CriteriosUsuario {
+    +tiempo: Int
+    +costo: Int
+    +comodidad: Int
+    +transbordos: Int
+    +ambiental: Int
+    +horaPico: Boolean
+    +mediosPermitidos: Set~TipoMedio~
+    +validar() CriteriosUsuario
+  }
+  class RedTransporte {
+    -paradas: HashMap~String,Parada~
+    -conexiones: HashMap~String,List~Conexion~~
+    +agregarParada(p)
+    +agregarLinea(linea, ids)
+    +conexionesDe(id) List~Conexion~
+  }
+  class Planificador {
+    +generar(origen, destino, criterios, suspendidas) MutableList~Alternativa~
+  }
+  class MotorPuntaje {
+    <<object>>
+    +clasificar(alternativas, criterios) List~AlternativaPuntuada~
+    +mejor(alternativas, criterios) Alternativa
+  }
+  class AsistenteIA {
+    <<AsistenteRepositorio>>
+    +responder(pregunta, contexto, historial) RespuestaAsistente
+  }
+  Ruta o-- "2..*" Parada
+  Tramo *-- Ruta
+  Tramo --> MedioDeTransporte
+  Alternativa o-- "1..*" Tramo
+  Alternativa ..> CriteriosUsuario : usa
+  RedTransporte o-- Parada
+  Planificador --> RedTransporte
+  Planificador ..> Alternativa : crea
+  MotorPuntaje ..> Alternativa
+  AsistenteIA ..> MotorPuntaje
+  class EstadoServicio {
+    +lineasSuspendidas: Set~String~
+    +aviso: String
+    +nivelAviso: NivelAviso
+    +actualizadoPor: String
+    +hayNovedades: Boolean
+  }
+  class AdminValidador {
+    <<object>>
+    +aviso(texto) String?
+    +estado(e, lineas) String?
+  }
+  class Estadisticas {
+    <<object>>
+    +calcular(registros, ahora) ResumenUso
+  }
+  EstadoServicio ..> Planificador : líneas suspendidas
+  AdminValidador ..> EstadoServicio : valida
+  Estadisticas ..> ResumenUso : produce

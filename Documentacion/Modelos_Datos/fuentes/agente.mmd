@@ -1,0 +1,14 @@
+flowchart TD
+  U["Usuario pregunta en el chat"] --> G{"AiInputGuard<br/>¿entrada válida?"}
+  G -- "No (vacía, >500 car.,<br/>manipulación)" --> R["Rechazo con mensaje<br/>(no se envía a la IA)"]
+  G -- Sí --> L["AsistenteLocal<br/>respuesta exacta con el ranking"]
+  L --> K{"¿GEMINI_API_KEY?"}
+  K -- No --> LO["⚙️ Respuesta local"]
+  K -- Sí --> RL{"AiRateLimiter<br/>≤10/min"}
+  RL -- Excedido --> LO
+  RL -- OK --> P["RutaAiPrompt: reglas + criterios<br/>+ alternativas puntuadas + respuesta local"]
+  P --> API["Google Gemini (HTTPS)"]
+  API -- "200" --> RG{"AiResponseGuard"}
+  API -- "Error / sin red / timeout" --> F["⚙️ Respuesta local + motivo"]
+  RG -- OK --> AI["🤖 Respuesta de IA"]
+  RG -- "vacía/inválida" --> F

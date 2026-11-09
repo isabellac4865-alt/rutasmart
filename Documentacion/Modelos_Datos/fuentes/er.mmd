@@ -1,0 +1,45 @@
+erDiagram
+  USUARIO ||--o{ CONSULTA : "realiza"
+  USUARIO ||--o| PREFERENCIAS : "define"
+  USUARIO ||--o| ADMIN : "puede ser"
+  ADMIN ||--o{ CONFIG_SERVICIO : "publica"
+  USUARIO {
+    string uid PK "Firebase Auth (o 'invitado')"
+    string correo
+  }
+  CONSULTA {
+    string id PK "UUID"
+    string usuarioId FK
+    string origen
+    string destino
+    long fechaMillis
+    string recomendada
+    double puntaje "0 a 100"
+    int tiempoMinutos
+    int costo "COP"
+    int alternativas
+    string criterios
+    boolean sincronizada "Room: 0/1"
+  }
+  PREFERENCIAS {
+    string usuarioId PK
+    int tiempo "0-5"
+    int costo "0-5"
+    int comodidad "0-5"
+    int transbordos "0-5"
+    int ambiental "0-5"
+    boolean horaPico
+    string medios "CSV de TipoMedio"
+  }
+  ADMIN {
+    string uid PK "admins/{uid}, se crea en la consola"
+    string rol "admin"
+  }
+  CONFIG_SERVICIO {
+    string id PK "config/servicio"
+    list lineasSuspendidas "ids de lineas"
+    string aviso "max 200"
+    string nivel "INFO / ALERTA / URGENTE"
+    long actualizadoMillis
+    string actualizadoPor FK "uid del admin"
+  }

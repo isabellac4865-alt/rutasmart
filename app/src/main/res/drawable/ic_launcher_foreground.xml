@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ícono de RutaSmart: una ruta punteada que une un punto de origen con un pin de destino. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Ruta -->
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="4" android:strokeLineCap="round" android:fillColor="#00000000"
+        android:pathData="M38,72 C30,64 44,56 54,56 C64,56 74,50 66,42" />
+    <!-- Origen -->
+    <path android:fillColor="#FFFFFF" android:pathData="M31,72 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0 Z" />
+    <path android:fillColor="#1B5FD9" android:pathData="M35,72 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 Z" />
+    <!-- Pin de destino -->
+    <path android:fillColor="#F29F05" android:pathData="M68,24 c-7.7,0 -14,6.1 -14,13.6 c0,9.8 14,22.4 14,22.4 c0,0 14,-12.6 14,-22.4 c0,-7.5 -6.3,-13.6 -14,-13.6 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M63,37.5 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0 Z" />
+</vector>

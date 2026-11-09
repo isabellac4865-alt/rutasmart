@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "313945588498",
+    "project_id": "rutasmart-10006",
+    "storage_bucket": "rutasmart-10006.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313945588498:android:2cc5238bb839f698b8e9cb",
+        "android_client_info": {
+          "package_name": "com.sarahpena.mercadito"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313945588498-jvsgdesib53e0ime01ms5r05bpkagrgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-VXIRoOOUAs-nVfk1tMA3YMVcGJ_6K3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313945588498-jvsgdesib53e0ime01ms5r05bpkagrgt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313945588498:android:fedc5b9922320701b8e9cb",
+        "android_client_info": {
+          "package_name": "com.sarahpena.rutasmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313945588498-jvsgdesib53e0ime01ms5r05bpkagrgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-VXIRoOOUAs-nVfk1tMA3YMVcGJ_6K3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313945588498-jvsgdesib53e0ime01ms5r05bpkagrgt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,28 @@
+sequenceDiagram
+  autonumber
+  actor U as Usuario
+  participant I as PantallaInicio
+  participant VM as RutaViewModel
+  participant BL as BuscarLugarUseCase
+  participant OA as ObtenerAlternativasUseCase
+  participant PL as Planificador
+  participant MP as MotorPuntaje
+  participant HR as HistorialRepositorio
+  participant DB as Room
+  participant FS as Firestore
+  U->>I: escribe origen/destino y toca «Buscar rutas»
+  I->>VM: buscar()
+  VM->>BL: invoke(texto) (si no eligió sugerencia)
+  BL-->>VM: Lugar o UbicacionInvalidaException
+  VM->>OA: invoke(origen, destino, criterios) [Dispatchers.Default]
+  OA->>PL: generar(...)
+  PL->>PL: directas + Dijkstra (TM, SITP, TM+SITP)
+  PL-->>OA: MutableList<Alternativa> o RutaNoEncontradaException
+  OA->>MP: clasificar(alternativas, criterios)
+  MP-->>OA: ranking (posición 1 = recomendada)
+  OA-->>VM: List<AlternativaPuntuada>
+  VM->>HR: guardar(consulta)
+  HR->>DB: insert (sincronizada = 0)
+  HR->>FS: sincronizar() mientras haya red (ciclo while)
+  FS-->>HR: ok → marcarSincronizada
+  VM-->>I: StateFlow actualizado → navegar a Alternativas

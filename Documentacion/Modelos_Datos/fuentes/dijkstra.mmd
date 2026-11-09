@@ -1,0 +1,10 @@
+flowchart TD
+  S["Inicio: nodo #origen, 0 min"] --> Q{"¿Cola de prioridad vacía?"}
+  Q -- Sí --> N["Sin camino → null<br/>(no hay alternativa pública)"]
+  Q -- No --> X["Sacar el estado con menos minutos<br/>(parada, línea actual, ¿abordó?)"]
+  X --> DST{"¿Es #destino?"}
+  DST -- Sí --> REC["Reconstruir camino<br/>y agrupar por línea → Tramos"]
+  DST -- No --> W["Caminar: origen→paradas ≤1,3 km<br/>parada→destino ≤1,3 km (si ya abordó)<br/>transbordo a pie ≤450 m"]
+  W --> V["Viajar: conexiones de líneas permitidas<br/>+ espera y penalidad al cambiar de línea"]
+  V --> RLX["Relajar: si el nuevo tiempo es menor,<br/>actualizar y encolar"]
+  RLX --> Q
